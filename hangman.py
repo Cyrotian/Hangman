@@ -9,16 +9,24 @@ def get_random_words():
 
 
 def user_guess(hangman_word):
-    print(hangman_word)
+    #print(hangman_word)
+    #print(type(hangman_word))
     tries = 6
+    previous_tries = []
     game_over = False
     # setting all values in the list to underscore _
     word_list = ["_" for i in range(len(hangman_word))]
     while not game_over:
         # *word_list opens the list and sets the separators to ' '
+        print("Words tried: ", end='')
+        print(*previous_tries, sep=',')
         print(display_hangman(tries))
         print(*word_list, sep=' ')
         word_guess = input("\nGuess the word : ")
+
+        if word_guess not in previous_tries:
+            previous_tries.append(word_guess)
+
         for i in range(len(hangman_word)):
             if hangman_word[i] == word_guess.upper():
                 # deleting the placeholder value
@@ -34,10 +42,10 @@ def user_guess(hangman_word):
 
         # counting the number of underscores in the list
         if word_list.count("_") == 0:
-            print('Congrats you have guess the word')
+            print(f'Congrats you have guess the word: {hangman_word.capitalize()}')
             game_over = True
         elif tries == 0:
-            print("You didn't guess the word")
+            print(f'You did not guess the word: {hangman_word.capitalize()}')
             print(display_hangman(tries))
             game_over = True
 
@@ -126,4 +134,7 @@ if __name__ == '__main__':
         if play_again.upper() == 'N':
             break
         elif play_again.upper() == 'Y':
+            hangman_word = get_random_words()
             user_guess(hangman_word)
+
+#hint
